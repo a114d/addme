@@ -3,387 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ahmed Saleh/Contact Card</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <title>AddMe | My Links</title>
+    
+    <meta name="description" content="Personal link-in-bio page for my social media and projects.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
     <style>
+        /* Modern Design System */
+        :root {
+            --primary: #2563eb; /* Professional Blue */
+            --bg: #f8fafc;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --card-bg: #ffffff;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
-            min-height: 100vh;
+            background-color: var(--bg);
+            color: var(--text-main);
             display: flex;
-            align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #130035 0%, #2a0e28 46%, #644100 100%);
-            font-family: system-ui, sans-serif;
-            padding: 20px;
-            perspective: 1000px;
-            overflow: hidden;
+            min-height: 100vh;
+            padding: 40px 20px;
+            line-height: 1.5;
         }
 
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .container {
             width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            animation: starFloat linear infinite;
-        }
-
-        .dots {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .dot {
-            position: absolute;
-            background: radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
-            border-radius: 50%;
-            animation: float linear infinite;
-        }
-
-        @keyframes float {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(var(--moveX), var(--moveY)); }
-        }
-
-        @keyframes starFloat {
-            from { transform: translateY(100vh) translateX(-100vw); }
-            to { transform: translateY(-100vh) translateX(100vw); }
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.1);
             max-width: 400px;
-            width: 100%;
-            border-radius: 20px;
-            padding: 30px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-            transform-style: preserve-3d;
-            animation: cardFloat 3s ease-in-out infinite;
-            position: relative;
-            z-index: 1;
+            text-align: center;
+            animation: fadeIn 0.8s ease-out;
         }
 
-        @keyframes cardFloat {
-            0%, 100% { transform: translateY(0) rotate3d(0, 1, 0, 0deg); }
-            50% { transform: translateY(-10px) rotate3d(0, 1, 0, 2deg); }
+        /* Profile Section */
+        header {
+            margin-bottom: 30px;
         }
 
-        .profile {
-            width: 150px;
-            height: 150px;
-            margin: 0 auto 20px;
-            border-radius: 20px;
-            overflow: hidden;
-            border: 3px solid transparent;
-            background: linear-gradient(45deg, #050dec23, #e9c1c12e);
-            padding: 3px;
-            animation: profilePulse 2s ease-in-out infinite;
+        .profile-wrapper {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            padding: 4px;
+            background: linear-gradient(135deg, var(--primary), #60a5fa);
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
         }
 
-        @keyframes profilePulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .profile img {
+        .profile-img {
             width: 100%;
             height: 100%;
+            border-radius: 50%;
             object-fit: cover;
-            border-radius: 17px;
-            transition: transform 0.3s ease;
+            background: #fff;
+            border: 3px solid white;
         }
 
-        .profile:hover img {
-            transform: scale(1.1);
-        }
-
-        .name {
-            color: white;
-            font-size: 24px;
-            text-align: center;
-            margin: 0 0 10px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            letter-spacing: -0.025em;
         }
 
         .bio {
-            color: rgba(255, 255, 255, 0.8);
-            text-align: center;
-            margin-bottom: 30px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 10px;
         }
 
-        .social-links {
-            display: grid;
-            gap: 10px;
-            margin-bottom: 30px;
+        /* Links Section */
+        .links-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
-        .social-button {
+        .link-card {
             display: flex;
             align-items: center;
-            padding: 12px 20px;
-            border-radius: 10px;
-            color: white;
+            justify-content: space-between;
+            background: var(--card-bg);
+            padding: 16px 20px;
+            border-radius: 12px;
             text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            color: var(--text-main);
+            font-weight: 600;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid transparent;
         }
 
-        .instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
-        .snapchat { background: linear-gradient(45deg, #FFFC00, #FFE100); color: black; }
-        .tiktok { background: linear-gradient(45deg, #000000, #000000, #000000, #363636); }
-        .whatsapp { background: linear-gradient(45deg, #25D366, #128C7E); }
-        .telegram { background: linear-gradient(45deg, #0088cc, #32A7E1); }
-
-        .social-button i {
-            margin-right: 10px;
-            font-size: 20px;
+        .link-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.1);
         }
 
-        .actions {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
+        .arrow-icon {
+            font-size: 1.1rem;
+            opacity: 0.4;
+            transition: var(--transition);
         }
 
-        button {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            cursor: pointer;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .qr-container {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            text-align: center;
-            z-index: 1000;
-        }
-
-        .qr-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 999;
-        }
-
-        #toast {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 8px;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        #toast.show {
+        .link-card:hover .arrow-icon {
+            transform: translateX(5px);
             opacity: 1;
-            transform: translateX(-50%) translateY(-20px);
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 50px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Entry Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 480px) {
+            body { padding: 20px; }
+            .link-card { padding: 14px 18px; }
         }
     </style>
 </head>
 <body>
-    <div class="dots" id="dots"></div>
-    <div class="stars" id="stars"></div>
-    
-    <div class="card" id="card">
-        <div class="profile">
-            <img src="./IMG_0635.jpg" alt="Ahmed Saleh">
-        </div>
-        
-        <h1 class="name">Ahmed Saleh</h1>
-        <p class="bio">De MAAN ♦<br> I.T specialist ⌨ <br> Project Managment ♠ <br> Human Rights Activist ♣ <br> Coffe Lover ♥</p>
 
-        <div class="social-links">
-            <a href="https://www.instagram.com/a1_1md" class="social-button instagram">
-                <i class="fab fa-instagram"></i>
-                Instagram
-            </a>
-            <a href="https://www.snapchat.com/add/a1_1md" class="social-button snapchat">
-                <i class="fab fa-snapchat-ghost"></i>
-                Snapchat
-            </a>
-            <a href="https://www.tiktok.com/@a_a.0d" class="social-button tiktok">
-                <i class="fab fa-tiktok"></i>
-                TikTok
-            </a>
-            <a href="https://wa.me/+31687746339" class="social-button whatsapp">
-                <i class="fab fa-whatsapp"></i>
-                WhatsApp
-            </a>
-            <a href="https://t.me/a1_1md" class="social-button telegram">
-                <i class="fab fa-telegram"></i>
-                Telegram
-            </a>
-        </div>
+    <div class="container">
+        <header>
+            <div class="profile-wrapper">
+                <img src="https://via.placeholder.com/150" alt="Profile Picture" class="profile-img">
+            </div>
+            <h1>Your Name</h1>
+            <p class="bio">Developer | Content Creator | Tech Enthusiast</p>
+        </header>
 
-        <div class="actions">
-            <button onclick="saveContact()">
-                <i class="fas fa-save"></i>
-                Save Contact
-            </button>
-            <button onclick="showQR(window.location.href)">
-                <i class="fas fa-qrcode"></i>
-                QR Code
-            </button>
-        </div>
+        <main class="links-list">
+            <a href="https://twitter.com/yourusername" class="link-card" target="_blank">
+                <span>Twitter (X)</span>
+                <span class="arrow-icon">→</span>
+            </a>
+
+            <a href="https://instagram.com/yourusername" class="link-card" target="_blank">
+                <span>Instagram</span>
+                <span class="arrow-icon">→</span>
+            </a>
+
+            <a href="https://github.com/a114d" class="link-card" target="_blank">
+                <span>GitHub</span>
+                <span class="arrow-icon">→</span>
+            </a>
+
+            <a href="https://linkedin.com/in/yourusername" class="link-card" target="_blank">
+                <span>LinkedIn</span>
+                <span class="arrow-icon">→</span>
+            </a>
+            
+            <a href="mailto:your@email.com" class="link-card">
+                <span>Contact Me</span>
+                <span class="arrow-icon">→</span>
+            </a>
+        </main>
+
+        <footer>
+            <p>Developed by <a href="https://github.com/a114d">a114d</a></p>
+        </footer>
     </div>
 
-    <div id="toast"></div>
-    
-    <div class="qr-overlay" onclick="closeQR()"></div>
-    <div class="qr-container" id="qrContainer">
-        <h3 class="qr-title">Scan Me</h3>
-        <div id="qrCode"></div>
-        <p class="qr-subtitle">Point your camera to connect</p>
-    </div>
-
-    <script>
-        function createDots() {
-            const container = document.getElementById('dots');
-            const dotCount = 50;
-            
-            for (let i = 0; i < dotCount; i++) {
-                const dot = document.createElement('div');
-                dot.className = 'dot';
-                
-                const size = Math.random() * 6 + 2;
-                dot.style.width = `${size}px`;
-                dot.style.height = `${size}px`;
-                
-                const startX = Math.random() * window.innerWidth;
-                const startY = Math.random() * window.innerHeight;
-                dot.style.left = `${startX}px`;
-                dot.style.top = `${startY}px`;
-                
-                const moveX = (Math.random() - 0.5) * 200;
-                const moveY = (Math.random() - 0.5) * 200;
-                dot.style.setProperty('--moveX', `${moveX}px`);
-                dot.style.setProperty('--moveY', `${moveY}px`);
-                
-                dot.style.animationDuration = `${Math.random() * 5 + 5}s`;
-                dot.style.opacity = Math.random() * 0.5 + 0.2;
-                
-                container.appendChild(dot);
-            }
-        }
-
-        function createStars() {
-            const container = document.getElementById('stars');
-            const starCount = 100;
-            
-            for (let i = 0; i < starCount; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                
-                const size = Math.random() * 3;
-                star.style.width = `${size}px`;
-                star.style.height = `${size}px`;
-                
-                star.style.left = `${Math.random() * 100}vw`;
-                star.style.top = `${Math.random() * 100}vh`;
-                star.style.opacity = Math.random() * 0.8 + 0.2;
-                star.style.animationDuration = `${Math.random() * 10 + 10}s`;
-                
-                container.appendChild(star);
-            }
-        }
-
-        function showQR(url) {
-            const qrContainer = document.getElementById('qrContainer');
-            const qrCode = document.getElementById('qrCode');
-            const overlay = document.querySelector('.qr-overlay');
-            
-            qrCode.innerHTML = '';
-            new QRCode(qrCode, {
-                text: url,
-                width: 200,
-                height: 200,
-                colorDark: "#000000",
-                colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.H
-            });
-            
-            qrContainer.style.display = 'block';
-            overlay.style.display = 'block';
-        }
-
-        function closeQR() {
-            document.getElementById('qrContainer').style.display = 'none';
-            document.querySelector('.qr-overlay').style.display = 'none';
-        }
-
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
-        }
-
-        function saveContact() {
-            const vcard = `BEGIN:VCARD
-VERSION:3.0
-FN:Ahmed Saleh
-TITLE:IT Specialist & Project Manager
-TEL:+31687746339
-END:VCARD`;
-
-            const blob = new Blob([vcard], { type: 'text/vcard' });
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = 'ahmed_saleh.vcf';
-            link.click();
-            window.URL.revokeObjectURL(url);
-            showToast('Contact saved! ✨');
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            createStars();
-            createDots();
-        });
-    </script>
 </body>
 </html>
